@@ -5,14 +5,13 @@ import colors from './css-colors';
 import './styles.css';
 
 function FadeInSection(props) {
-  const [isVisible, setVisible] = React.useState(true);
+  const [isVisible, setVisible] = React.useState(false);
   const domRef = React.useRef();
   React.useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => setVisible(entry.isIntersecting));
     });
     observer.observe(domRef.current);
-    return () => observer.unobserve(domRef.current);
   }, []);
   return (
     <div
@@ -23,3 +22,22 @@ function FadeInSection(props) {
     </div>
   );
 }
+
+function App() {
+  return (
+    <div className="App">
+      <h1>All the CSS colors!</h1>
+
+      {colors.map(color => (
+        <FadeInSection key={color}>
+          <div className="box" style={{ backgroundColor: color }}>
+            <span>{color}</span>
+          </div>
+        </FadeInSection>
+      ))}
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App />, rootElement);
